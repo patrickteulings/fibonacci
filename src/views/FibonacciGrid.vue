@@ -20,6 +20,8 @@ import GridRow from '@/components/fibonacci/GridRow.vue';
 // Interfaces / Types
 import { IGridItem } from '@/types/GridItem';
 
+// Helpers
+import { compareArrays } from '@/helpers/arrayHelper';
 
 export default {
   name: 'DashBoard',
@@ -51,7 +53,7 @@ export default {
         item[column].candidate = (state.fibonacci.indexOf(item[column].value) === -1) ? false : true;
       });
 
-      // Let's see if there's an occurrence of the Fibonacci sequece in a Row
+      // Let's see if there's an occurrence of the Fibonacci sequence in a Row
       checkForFibonacciOccurrenceInRows();
     };
 
@@ -77,7 +79,6 @@ export default {
       // @TODO SetTimeout seems ugly here...
       state.fibonacci.map((item, index) => {
          if (compareArrays(destructuredGridItemGroup, state.fibonacci.slice(index, index + 5))) {
-           console.log('found');
            gridItemGroup.map((gridItem) => gridItem.highlightme = true);
            setTimeout(() => {
              gridItemGroup.map((gridItem) => gridItem.highlightme = false);
@@ -87,25 +88,13 @@ export default {
       });
     };
 
-    const compareArrays = (array1: number[], array2: number[]): boolean => {
-      const arrayLength: number = array1.length;
-      const isValidFibonacciSequence: boolean = false;
-
-      for (let i = 0; i < arrayLength; i++) { // number[] is not iterable, why?
-        if (array1[i] !== array2[i]) {
-          return false;
-        }
-      }
-
-      return true;
-    };
-
     onMounted(() => {
       // Populate the fibonaccy number
       state.fibonacci = Array.from({ length: 10 }).reduce(
         (acc: number[], val, i) => acc.concat(i > 1 ? acc[i - 1] + acc[i - 2] : i),
         []
       );
+
       // Create our Array for the FibonacciMatrix (Row > Grid)
       state.fibonacciMatrix = Array.from({length: ROWS}, (rowValue, rowIndex) => Array.from({length: COLUMNS}, (columnValue, columnIndex) => ({ row: rowIndex, column: columnIndex, value: 0, candidate: true, highlightme: false }) ));
     });
