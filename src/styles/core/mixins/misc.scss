@@ -1,0 +1,52 @@
+@mixin flex-center($direction) {
+  display: flex;
+
+  @if $direction == 'horizontal' {
+    justify-content: center;
+  }
+  @else if $direction == 'vertical' {
+    align-items: center;
+  }
+  @else if $direction == 'center' {
+    align-items: center;
+    justify-content: center;
+  }
+  @else {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ----------------------------------------
+  Simplifies an standardizes positioning of elements
+
+  Usage: @include position('relative', 0px, px);
+
+---------------------------------------- */
+
+@mixin position($type: relative, $left: 0, $top: 0, $right: auto, $bottom: auto) {
+  position: $type;
+  left: $left;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+}
+
+/* ----------------------------------------
+  Simply defines width and/or height
+  When ony one parameter is given
+  width and height are equal;
+
+  Usage: @include size(20px);
+---------------------------------------- */
+
+@mixin size($width:auto, $height:auto) {
+  @if $height != auto {
+    width: $width;
+    height: $height;
+  }
+  @else {
+    width: $width;
+    height: $width;
+  }
+}

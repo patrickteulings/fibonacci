@@ -1,0 +1,58 @@
+@import
+  "core/core.scss";
+
+
+body, html {
+  font-size: 18px;
+}
+
+.grid-row-wrapper {
+  display: grid;
+  grid-gap: 1px;
+  grid-template-rows: repeat(50, 2rem);
+}
+
+.grid-column-wrapper {
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: repeat(50, 2rem);
+  height: 100%;
+}
+
+.grid-item {
+  font-size: 0.5rem;
+  @include position;
+  background: color('base');
+  cursor: pointer;
+
+  &__inner {
+    @include size(100%);
+    @include flex-center('both');
+    @include position();
+    color: color('white');
+    z-index: 10;
+  }
+
+  &:after {
+    content: '';
+    width: 120%;
+    height: 120%;
+    position: absolute;
+    left: -10%;
+    top: -10%;
+    background: color('primary');
+    pointer-events: none;
+    opacity: 0;
+    z-index: 0;
+    // @include transition();
+  }
+
+  &:hover {
+    z-index: 2;
+
+    &:after {
+      display: block;
+      opacity: 1;
+    }
+  }
+}

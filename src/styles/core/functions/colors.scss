@@ -1,0 +1,4 @@
+// Simple map function for color getting colors by name
+@function color($name) {
+  @return map-get($primary-colors, $name);
+}
