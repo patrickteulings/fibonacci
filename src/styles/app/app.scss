@@ -1,0 +1,97 @@
+
+body, html {
+  font-size: 16px;
+  padding: 2rem;
+  margin: 0;
+  font-family: 'Fira Code', monospace, sans-serif;
+}
+
+.nav {
+  margin-bottom: 1.5rem;
+
+  a {
+    text-decoration: none;
+    color: color('base');
+  }
+}
+
+.main {
+  @include position;
+}
+
+.grid-row {
+  @include position;
+}
+
+.grid-row-wrapper {
+  @include position(absolute);
+  display: inline-grid;
+  grid-gap: 1px;
+  grid-template-rows: repeat(50, 1.5rem);
+  height: 1.5rem;
+}
+
+.grid-column-wrapper {
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: repeat(50, 1.5rem);
+  height: 100%;
+}
+
+.grid-item {
+  @include position;
+  font-size: 0.5rem;
+  color: color('white');
+  background: color('base');
+  cursor: pointer;
+
+  &.highlighted {
+    background: color('primary');
+  }
+
+  &__inner {
+    @include size(100%);
+    @include flex-center('both');
+    @include position();
+    z-index: 10;
+  }
+
+  &:hover {
+    z-index: 2;
+    color: color('base');
+    background: color('white');
+  }
+}
+
+// Underlying row and column highlighters
+.grid-column-highlight-wrapper, .grid-row-highlight-wrapper {
+  @include position(absolute);
+  display: inline-grid;
+  grid-template-columns: repeat(50, 1.5rem);
+  grid-template-rows: repeat(50, 1.5rem);
+  grid-gap: 1px;
+}
+
+.row-highlighter {
+  background: color('base');
+  grid-row: 1 / span 50;
+  opacity: 0;
+  @include transition(opacity, 0.1s);
+
+  &.is-highlighted {
+    opacity: 1;
+    background: color('secondary');
+  }
+}
+
+.column-highlighter {
+  background: color('base');
+  grid-column: 1 / span 50;
+  opacity: 0;
+  @include transition(opacity, 0.1s);
+
+  &.is-highlighted {
+    background: color('secondary');
+    opacity: 1;
+  }
+}

@@ -109,7 +109,7 @@
       const findInFibonacciSequence = (gridItemGroup: IGridItem[]) => {
         const destructuredGridItemGroup = gridItemGroup.map(({value}) => value);
 
-        // @TODO SetTimeout seems ugly here...
+        // @TODO SetTimeout seems ugly here, and the map function seems to kill performance
         state.fibonacci.map((item, index) => {
           if (compareArrays(destructuredGridItemGroup, state.fibonacci.slice(index, index + 5))) {
             gridItemGroup.map((gridItem) => gridItem.highlightme = true);
