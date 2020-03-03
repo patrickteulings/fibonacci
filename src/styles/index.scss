@@ -22,16 +22,16 @@ body, html {
   @include position;
 }
 
+.grid-row {
+  @include position;
+}
+
 .grid-row-wrapper {
   @include position(absolute);
   display: inline-grid;
   grid-gap: 1px;
   grid-template-rows: repeat(50, 1.5rem);
   height: 1.5rem;
-}
-
-.grid-row {
-  @include position;
 }
 
 .grid-column-wrapper {
@@ -59,26 +59,10 @@ body, html {
     z-index: 10;
   }
 
-  &:after {
-    content: '';
-    width: 140%;
-    height: 140%;
-    position: absolute;
-    left: -20%;
-    top: -20%;
-    background: lighten(color('primary'), 20%);
-    pointer-events: none;
-    display: none;
-    z-index: 0;
-  }
-
   &:hover {
     z-index: 2;
     color: color('base');
-
-    &:after {
-      display: block;
-    }
+    background: color('white');
   }
 }
 
@@ -95,7 +79,7 @@ body, html {
   background: color('base');
   grid-row: 1 / span 50;
   opacity: 0;
-  @include transition(all, 0.1s);
+  @include transition(opacity, 0.1s);
 
   &.is-highlighted {
     opacity: 1;
@@ -107,7 +91,7 @@ body, html {
   background: color('base');
   grid-column: 1 / span 50;
   opacity: 0;
-  @include transition();
+  @include transition(opacity, 0.1s);
 
   &.is-highlighted {
     background: color('secondary');
