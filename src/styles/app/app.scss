@@ -45,6 +45,10 @@ body, html {
   background: color('base');
   cursor: pointer;
 
+  &:nth-child(odd) {
+    background: darken(color('base'), 5%);
+  }
+
   &.highlighted {
     background: color('primary');
   }
