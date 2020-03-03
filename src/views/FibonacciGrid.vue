@@ -38,7 +38,7 @@ export default {
       fibonacci: new Array()
     });
 
-    // @TODO when candidate is found, check backwards / upwards as well
+
 
     const handleClick = ({row, column, value}: IGridItem): void => {
       // Update all GridItem Values in a Row
@@ -54,22 +54,40 @@ export default {
       });
 
       // Let's see if there's an occurrence of the Fibonacci sequence in a Row
+      // Note: Decided not to check for RTL or Updwards / Backwards check, doesn't seem right or an actual Fib. Sequence
       checkForFibonacciOccurrenceInRows();
+      checkForFibonacciOccurrenceInColumns();
     };
 
     const checkForFibonacciOccurrenceInRows = () => {
       state.fibonacciMatrix.map((row: IGridItem[], rowIndex: number) => {
         row.map((item: IGridItem, columnIndex: number) => {
           if (item.candidate === true && columnIndex <= (COLUMNS - 5) && row[columnIndex + 4].candidate === true && row[columnIndex + 4].value > item.value) {
-            // We know the starting point is eligable, has at least 4 siblings, and the fourth sibling is eligable as well,
-            // and also larger than the the startingpoints value
-            // Now lets check the sequence of those items against the fibonacci sequence
+            // We know the starting point is eligable, has at least 4 siblings, and the fourth/last sibling is eligable as well,
+            // and also larger than the the startingpoints' value
+            // Now let's check the sequence of those items against the fibonacci sequence
             findInFibonacciSequence(row.slice(columnIndex, columnIndex + 5));
 
             // Other possible checks: Sibling should be greater then 1, if startingpoint.value !== 0 or 1
             // Sibling nr 3 cannot be 1 ( fibonacci 0,1,1,2)
           }
         });
+      });
+    };
+
+    const checkForFibonacciOccurrenceInColumns = () => {
+      state.fibonacciMatrix.map((row: IGridItem[], rowIndex: number) => {
+        if (rowIndex <= ROWS - 5) {
+          row.map((item: IGridItem, columnIndex: number) => {
+            if (item.candidate === true && state.fibonacciMatrix[rowIndex + 4][columnIndex].candidate === true && state.fibonacciMatrix[rowIndex + 4][columnIndex].value > item.value) {
+              const candidateArray = new Array();
+              for (let i = rowIndex; i < (rowIndex + 5); i++) {
+                candidateArray.push(state.fibonacciMatrix[i][columnIndex]);
+              }
+              findInFibonacciSequence(candidateArray);
+            }
+          });
+        }
       });
     };
 

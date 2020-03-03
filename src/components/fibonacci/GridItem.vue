@@ -1,10 +1,7 @@
 <template>
-  <div class="grid-item" @click="handleClick" role="button">
-    <!-- {{ itemData.row }}
-    {{ itemData.column }} -->
+  <div class="grid-item" :class="{'highlighted': itemData.highlightme}" @click="handleClick" role="button">
     <div class="grid-item__inner">
       {{ itemData.value }}
-      <span v-if="itemData.highlightme === true">hoezee</span>
     </div>
   </div>
 </template>

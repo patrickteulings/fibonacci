@@ -25,6 +25,10 @@ body, html {
   background: color('base');
   cursor: pointer;
 
+  &.highlighted {
+    background: color('primary');
+  }
+
   &__inner {
     @include size(100%);
     @include flex-center('both');
