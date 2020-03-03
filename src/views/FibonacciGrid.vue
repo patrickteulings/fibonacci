@@ -1,7 +1,13 @@
 <template>
-  <div>
+  <div class="main">
     <div class="grid-row-wrapper">
-      <grid-row class="grid-row" v-for="(item, index) in state.fibonacciMatrix" :key="index" :rowData="item" @clicked="handleClick"/>
+      <grid-row class="grid-row" v-for="(item, index) in state.fibonacciMatrix" :key="index" :rowData="item" @clicked="handleClick" />
+    </div>
+    <div class="grid-column-highlight-wrapper">
+      <div class="row-highlighter" v-for="(item, index) in state.fibonacciMatrix" :key="'row-highlighter-' + index" :id="'row-' + index"></div>
+    </div>
+    <div class="grid-row-highlight-wrapper">
+      <div class="column-highlighter" v-for="(item, index) in state.fibonacciMatrix" :key="'column-highlighter-' + index" :id="'column-' + index"></div>
     </div>
   </div>
 </template>
@@ -53,7 +59,19 @@ export default {
         item[column].candidate = (state.fibonacci.indexOf(item[column].value) === -1) ? false : true;
       });
 
-      // Let's see if there's an occurrence of the Fibonacci sequence in a Row
+      // Show a little highlight bar to indicate which Row and Column we affected
+      const highlightRow = document.getElementById('row-' + column);
+      const highlightColumn = document.getElementById('column-' + row);
+
+      if (highlightRow) highlightRow.classList.add('is-highlighted');
+      if (highlightColumn) highlightColumn.classList.add('is-highlighted');
+
+      setTimeout(() => {
+        if (highlightRow) highlightRow.classList.remove('is-highlighted');
+        if (highlightColumn) highlightColumn.classList.remove('is-highlighted');
+      }, 600);
+
+      // Let's see if there's an occurrence of the Fibonacci sequence in a Row or Column
       // Note: Decided not to check for RTL or Updwards / Backwards check, doesn't seem right or an actual Fib. Sequence
       checkForFibonacciOccurrenceInRows();
       checkForFibonacciOccurrenceInColumns();
@@ -81,9 +99,11 @@ export default {
           row.map((item: IGridItem, columnIndex: number) => {
             if (item.candidate === true && state.fibonacciMatrix[rowIndex + 4][columnIndex].candidate === true && state.fibonacciMatrix[rowIndex + 4][columnIndex].value > item.value) {
               const candidateArray = new Array();
+
               for (let i = rowIndex; i < (rowIndex + 5); i++) {
                 candidateArray.push(state.fibonacciMatrix[i][columnIndex]);
               }
+
               findInFibonacciSequence(candidateArray);
             }
           });
@@ -99,7 +119,10 @@ export default {
          if (compareArrays(destructuredGridItemGroup, state.fibonacci.slice(index, index + 5))) {
            gridItemGroup.map((gridItem) => gridItem.highlightme = true);
            setTimeout(() => {
-             gridItemGroup.map((gridItem) => gridItem.highlightme = false);
+             gridItemGroup.map((gridItem) => {
+               gridItem.highlightme = false;
+               gridItem.value = 0;
+              });
            }, 2000);
            return;
          }
@@ -113,7 +136,7 @@ export default {
         []
       );
 
-      // Create our Array for the FibonacciMatrix (Row > Grid)
+      // Create our Multidimensional Array  for the FibonacciMatrix (Row > Grid)
       state.fibonacciMatrix = Array.from({length: ROWS}, (rowValue, rowIndex) => Array.from({length: COLUMNS}, (columnValue, columnIndex) => ({ row: rowIndex, column: columnIndex, value: 0, candidate: true, highlightme: false }) ));
     });
 
